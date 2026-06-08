@@ -1,6 +1,6 @@
 # Notification Service
 
-Bagian dari sistem **Pharmacy Inventory Management** berbasis microservices.
+Bagian dari **Sistem Manajemen Inventaris Apotek** berbasis microservices.
 
 Service ini menerima event dari RabbitMQ dan menyimpan notifikasi ke Firebase Firestore.
 
