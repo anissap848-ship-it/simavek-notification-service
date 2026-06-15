@@ -1,12 +1,13 @@
 const { db } = require('../utils/firebase');
 
-const saveNotification = async (type, data) => {
+const saveNotification = async (type, message, data) => {
   try {
     await db.collection('notifications').add({
       type,
+      message,
       data,
-      createdAt: new Date().toISOString(),
       read: false,
+      created_at: new Date().toISOString(),
     });
     console.log(`[${type}] Notification saved to Firestore`);
   } catch (err) {
@@ -16,20 +17,23 @@ const saveNotification = async (type, data) => {
 
 const handleLowStock = (data) => {
   // data: { medicineId, medicineName, currentStock, threshold }
-  console.log(`[ALERT] Low stock: ${data.medicineName} - only ${data.currentStock} left`);
-  saveNotification('low_stock', data);
+  const message = `Stok obat ${data.medicineName} menipis, sisa ${data.currentStock} unit`;
+  console.log(`[ALERT] ${message}`);
+  saveNotification('stock_low', message, data);
 };
 
 const handleTransaction = (data) => {
   // data: { transactionId, type, medicineName, quantity, timestamp }
-  console.log(`[INFO] Transaction: ${data.type} - ${data.medicineName} x${data.quantity}`);
-  saveNotification('transaction', data);
+  const message = `Transaksi ${data.type} berhasil: ${data.medicineName} x${data.quantity}`;
+  console.log(`[INFO] ${message}`);
+  saveNotification('transaction_completed', message, data);
 };
 
 const handleExpiryAlert = (data) => {
   // data: { medicineId, medicineName, expiryDate, daysRemaining }
-  console.log(`[ALERT] Expiry: ${data.medicineName} expires in ${data.daysRemaining} days`);
-  saveNotification('expiry_alert', data);
+  const message = `Obat ${data.medicineName} akan expired dalam ${data.daysRemaining} hari`;
+  console.log(`[ALERT] ${message}`);
+  saveNotification('po_received', message, data);
 };
 
 module.exports = { handleLowStock, handleTransaction, handleExpiryAlert };

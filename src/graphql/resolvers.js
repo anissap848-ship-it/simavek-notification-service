@@ -3,7 +3,9 @@ const { db } = require('../utils/firebase');
 const resolvers = {
   Query: {
     notifications: async () => {
-      const snapshot = await db.collection('notifications').orderBy('createdAt', 'desc').get();
+      const snapshot = await db.collection('notifications')
+        .orderBy('created_at', 'desc')
+        .get();
       return snapshot.docs.map(doc => ({
         id: doc.id,
         ...doc.data(),

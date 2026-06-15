@@ -4,9 +4,10 @@ const typeDefs = gql`
   type Notification {
     id: ID!
     type: String!
+    message: String!
     data: String!
     read: Boolean!
-    createdAt: String!
+    created_at: String!
   }
 
   type Query {
