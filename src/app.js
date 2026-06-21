@@ -12,11 +12,6 @@ app.use(express.json());
 
 const PORT = process.env.PORT || 3004;
 
-// Health check
-app.get('/health', (req, res) => {
-  res.json({ status: 'ok', service: 'notification-service' });
-});
-
 // REST API routes
 app.use('/notifications', notificationRoutes);
 

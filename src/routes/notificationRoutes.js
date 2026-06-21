@@ -41,14 +41,4 @@ router.patch('/:id/read', async (req, res) => {
   }
 });
 
-// DELETE /notifications/:id - Hapus notifikasi
-router.delete('/:id', async (req, res) => {
-  try {
-    await db.collection('notifications').doc(req.params.id).delete();
-    res.json({ success: true, message: 'Notification deleted' });
-  } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
-  }
-});
-
 module.exports = router;
