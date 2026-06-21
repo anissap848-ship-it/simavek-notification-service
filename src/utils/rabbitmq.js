@@ -11,17 +11,17 @@ const connectRabbitMQ = async () => {
 
     await channel.assertQueue('notification.low_stock', { durable: true });
     await channel.assertQueue('notification.transaction', { durable: true });
-    await channel.assertQueue('notification.expiry_alert', { durable: true });
+    await channel.assertQueue('notification.po_received', { durable: true });
 
     console.log('Queues asserted. Waiting for messages...');
 
     const { consumeLowStock } = require('../consumers/lowStockConsumer');
     const { consumeTransaction } = require('../consumers/transactionConsumer');
-    const { consumeExpiryAlert } = require('../consumers/expiryAlertConsumer');
+    const { consumePoReceived } = require('../consumers/poReceivedConsumer');
 
     consumeLowStock(channel);
     consumeTransaction(channel);
-    consumeExpiryAlert(channel);
+    consumePoReceived(channel);
 
   } catch (error) {
     console.error('Failed to connect to RabbitMQ:', error.message);
