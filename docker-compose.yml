@@ -2,17 +2,19 @@ version: '3.8'
 
 services:
   notification-service:
-    build: ./simavek-notification-service
+    build: .
     container_name: simavek-notification-service
     restart: always
-    depends_on:
-      - rabbitmq
     ports:
       - "3004:3004"
     environment:
       PORT: 3004
       RABBITMQ_URL: amqp://rabbitmq:5672
     volumes:
-      - ./simavek-notification-service/serviceAccountKey.json:/app/serviceAccountKey.json:ro
+      - ./serviceAccountKey.json:/app/serviceAccountKey.json:ro
     networks:
       - simavek-network
+
+networks:
+  simavek-network:
+    external: true
