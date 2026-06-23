@@ -16,24 +16,24 @@ const saveNotification = async (type, message, data) => {
 };
 
 const handleLowStock = (data) => {
-  // data: { medicineId, medicineName, currentStock, threshold }
-  const message = `Stok obat ${data.medicineName} menipis, sisa ${data.currentStock} unit`;
+  const payload = data.data ?? data;
+  const message = `Stok obat ${payload.medicineName} menipis, sisa ${payload.currentStock} unit (minimum: ${payload.minStock})`;
   console.log(`[ALERT] ${message}`);
-  saveNotification('stock_low', message, data);
+  saveNotification("stock_low", message, payload);
 };
 
 const handleTransaction = (data) => {
-  // data: { transactionId, type, medicineName, quantity, timestamp }
-  const message = `Transaksi ${data.type} berhasil: ${data.medicineName} x${data.quantity}`;
+  const payload = data.data ?? data;
+  const message = `Transaksi ${payload.trxNumber} (${payload.transactionType}) senilai Rp${payload.totalAmount} berhasil diproses`;
   console.log(`[INFO] ${message}`);
-  saveNotification('transaction_completed', message, data);
+  saveNotification('transaction_completed', message, payload);
 };
 
-const handleExpiryAlert = (data) => {
-  // data: { medicineId, medicineName, expiryDate, daysRemaining }
-  const message = `Obat ${data.medicineName} akan expired dalam ${data.daysRemaining} hari`;
-  console.log(`[ALERT] ${message}`);
-  saveNotification('po_received', message, data);
+const handlePoReceived = (data) => {
+  const payload = data.data ?? data;
+  const message = `Purchase Order ${payload.poNumber} telah diterima`;
+  console.log(`[INFO] ${message}`);
+  saveNotification('po_received', message, payload);
 };
 
-module.exports = { handleLowStock, handleTransaction, handleExpiryAlert };
+module.exports = { handleLowStock, handleTransaction, handlePoReceived };
